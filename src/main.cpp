@@ -89,7 +89,13 @@ int read_images(const fs::path& path, uint8_t label, vector<image>& images, int 
         if (srcimg.data == nullptr)
             continue;
 
-        cv::resize(srcimg, img.data, cv::Size(w, h)); // gray, linear interpolation
+        //Resize only if really needed
+        if(srcimg.size() != cv::Size(w, h)) {
+            cv::resize(srcimg, img.data, cv::Size(w, h)); // gray, linear interpolation
+        }
+        else {
+            srcimg.copyTo(img.data);
+        }
 
         //cv::imshow("data", img.data);
         //cv::waitKey(5);
